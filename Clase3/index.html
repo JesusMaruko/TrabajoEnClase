@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <canvas id="mycanvas" width="1000" height="1000">
+        Hola tu navegador no funciona
+    </canvas>
+
+    
+    <script type="text/javascript">
+
+        var cv = document.getElementById('mycanvas');
+        var ctx = cv.getContext('2d');
+        var color = "red";
+        var fig = 'arc';
+        var press = false;
+        var super_x = 0;
+        var super_y = 0;
+        
+       /* //texto
+        ctx.font = "38px Arial";
+        ctx.fillText("Hola Mundo", 150, 50);
+        ctx.strokeText("Hola Mundo",150,80);*/
+
+        /*//Gradient
+        var grd = ctx.createLinearGradient(80,0,220,0);
+        grd.addColorStop(0,"blue");
+        grd.addColorStop(0.5,"purple")
+        grd.addColorStop(1,"orange");
+        ctx.fillStyle = grd;
+        ctx.fillRect(20,200,200,120);*/
+
+       /* //Radial
+        grd = ctx.createRadialGradient(75,50,5,90,60,100);
+        grd.addColorStop(0,"blue");
+        grd.addColorStop(0.5,"purple")
+        grd.addColorStop(1,"orange");
+        ctx.fillStyle = grd;
+        ctx.fillRect(0,0,200,120); */
+          
+       /* //imagenes
+        var img = document.getElementById('imagen');
+        ctx.drawImage(img,10,340);*/
+
+
+        //EventListener onclick
+       /* cv.addEventListener('click',function(e){
+            if(fig=='arc'){
+                //Circulos onClick
+                ctx.beginPath();
+                ctx.strokeStyle="black";
+                ctx.fillStyle = color;
+                ctx.arc(e.offsetX-25,e.offsetY-25,50,0, 2*Math.PI);
+                ctx.stroke();
+                ctx.fill();
+            }else{
+                //Cuadrados onClick
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.fillRect(e.offsetX-25,e.offsetY-25,50,50);
+                ctx.strokeStyle = "black";
+                ctx.strokeRect(e.offsetX-25,e.offsetY-25,50,50);
+                
+            }
+            
+
+            
+        })
+        //EventListener mouseover
+       cv.addEventListener('mouseover', function(e){
+            color = getRandomColor();
+       })
+       //EventListener mouseout
+       cv.addEventListener('mouseout', function(e){
+            fig = (fig=='arc')?'rec':'arc';
+       })
+       //EventListener mousemove
+       cv.addEventListener('mousemove', function(e){
+            if(press){
+            ctx.beginPath();
+            ctx.fillStyle="black";
+            ctx.fillRect(e.offsetX-25,e.offsetY-25,5,5);  
+            }  
+       })
+       cv.addEventListener('mousedown', function(e){
+        press = true;
+       })
+       cv.addEventListener('mouseup', function(e){
+        press = false;
+       })
+       
+
+       //Funcion para generar colores aleatorio
+       function getRandomColor() {
+            var trans = '0.5'; // 50% transparency
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+                color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')'; // add the transparency
+            return color;
+            }*/
+
+            document.addEventListener('keydown',function(e){
+                
+                //arriba
+                if(e.keyCode==38 || e.keyCode==87){
+                    super_y-=5;
+                }
+                //abajo
+                if(e.keyCode==40 || e.keyCode==83){
+                    super_y+=5;
+                }
+                //derecha
+                if(e.keyCode==39 || e.keyCode==68){
+                    super_x+=5;
+                }
+                //izquierda
+                if(e.keyCode==37 || e.keyCode==65){
+                    super_x-=5;
+                }
+
+                paint();
+             })
+                function paint()
+                {
+                    ctx.fillStyle="white";
+                    ctx.fillRect(0,0,1000,1000);
+                    ctx.fillStyle="red";
+                    ctx.fillRect(super_x,super_y,40,40);
+                    ctx.strokeRect(super_x,super_y,40,40);
+                }
+
+            
+    </script>
+</body>
+</html>

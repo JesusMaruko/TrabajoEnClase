@@ -26,6 +26,10 @@
         var pause =false;
         var pared = [null,null,null,null];
 
+        var coin = new Image();
+        var krabby = new Image();
+        var sound1 = new Audio();
+
 
 
         function getRandomInt(max) {
@@ -42,7 +46,9 @@
             pared[1] = new Cuadro(50, 50, 400, 20, "white");
             pared[2] = new Cuadro(400, 150, 20, 400, "white");
             pared[3] = new Cuadro(200, 200, 400, 20, "white");
-
+            coin.src="coin2.png";
+            krabby.src="krabby.png";
+            sound1.src = "audio.mp3";
             paint();
 
             
@@ -56,8 +62,11 @@
             ctx.font="30px Arial";
             ctx.fillStyle="green";
             ctx.fillText("SCORE: "+score,20,20);
-            player1.pintar(ctx);
-            player2.pintar(ctx);
+            //player1.pintar(ctx);
+            ctx.drawImage(krabby,player1.x,player1.y);
+
+            //player2.pintar(ctx);
+            ctx.drawImage(coin,player2.x,player2.y);
             for(var i=0;i<pared.length;i++){
                 pared[i].pintar(ctx);
             }
@@ -168,6 +177,7 @@
             }
 
             if(player1.intersects(player2)){
+                sound1.play();
                 score+=10;
                 speed+=0.5;
                 player2.x=getRandomInt(600);

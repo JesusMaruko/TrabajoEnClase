@@ -20,7 +20,7 @@
         <h1>
             {{lastname}}
         </h1>
-
+        
         <input type="text" v-model="name">
         <button @click="hola">click me</button>
         <hr>
@@ -30,6 +30,29 @@
         <h1>
             {{resultado}}
         </h1>
+       
+        <hr>
+        <input type="text" v-model="age">
+        <button>Revisar</button>
+        <h1 v-if="age >=18">
+            Pase
+         </h1>
+         <h1 v-if="age <18">
+            No pase
+         </h1>
+        
+         <hr>
+         <ol>
+            <li v-for="item in chamacos">
+                {{item.name}} : <span>{{item.role}}</span>
+
+            </li>
+
+         </ol>
+         <input type="text" v-model="chamacos_name">
+         <input type="text" v-model="chamacos_role">
+
+         <button @click="agregar"> agregar chamaco</button>
 
     </div>
     <script type="text/javascript">
@@ -42,7 +65,11 @@
                     lastname: 'Dominguez',
                     uno: '0',
                     dos: '0',
-                    resultado: ''
+                    resultado: '',
+                    age: '',
+                    chamacos: [{ name: 'Iran', role: 'front'},{ name: 'Duarte', role: 'backend'}, {name: 'Buenrostro', role: 'Movil'}],
+                    chamacos_name: '',
+                    chamacos_role: ''
                 }
           }, methods:{
             hola() {
@@ -50,7 +77,11 @@
             },
             suma(){
                 this.resultado= parseInt(this.uno) + parseInt(this.dos);
+            },
+            agregar(){
+                this.chamacos.push({name:this.chamacos_name, role:this.chamacos_role});
             }
+
           }
         }).mount('#contenedor')
     </script>

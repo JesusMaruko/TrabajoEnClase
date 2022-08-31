@@ -23,7 +23,9 @@
         var direccion = 'left';
         var pause =true;
         var pared = [];
-        var tiempo = 0;
+        var tiempo ;
+        var s=0;
+        var m=0;
         var victoria = false;
         var krabby = new Image();
         var queso = new Image();
@@ -41,7 +43,8 @@
             krabby.src="jaiba.png";
             back.src="bground.jpg";
             queso.src="cheese.png";
-            ambiente.src="ambiente.mp3";
+            ambiente.src="cynthia.mp3";
+            winMusic.src="win.mp3";
             paint();
         }
 
@@ -50,8 +53,12 @@
             window.requestAnimationFrame(paint)
             ctx.drawImage(back,100,100)
             ctx.font="30px Arial";
+            ctx.beginPath();
+            ctx.fillStyle="rgb(255,255,255)";
+            ctx.fillRect(50,50,500,30);
             ctx.fillStyle="black";
-            ctx.fillText("time: " +tiempo+"sec",50,50);
+            ctx.fillText("time: " +m+":"+s,50,50);
+            
             //player1.pintar(ctx);
             ctx.drawImage(krabby,player1.x,player1.y);
             ctx.drawImage(queso,quesito.x,quesito.y);
@@ -72,7 +79,9 @@
             }else{
              speed =1;
              ambiente.play();
+             crono();
              update();
+
             }
 
             if(victoria){
@@ -87,6 +96,7 @@
                 speed=0;
                 ambiente.pause();
                 ambiente.currentTime = 0;
+                
             }else{
                 update();
             }
@@ -191,6 +201,7 @@
                 player1.x-=speed;
                 player1.y-=speed;
                 victoria =true;
+                winMusic.play();
                 
             }
 
@@ -215,6 +226,8 @@
             }
 
         }
+      
+        
 
         function agregaParedes(){
             //Recuadro 600x600, Paredes principales

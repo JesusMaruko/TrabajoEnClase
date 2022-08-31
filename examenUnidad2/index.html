@@ -17,7 +17,6 @@
 
         var cv = null;
         var ctx = null;
-        var press = false;
         var player1 = null;
         var quesito = null;
         var speed =2;
@@ -30,10 +29,7 @@
         var queso = new Image();
         var back = new Image();
 
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * max);
-        }
-
+    
         function run(){
             cv = document.getElementById('mycanvas');
             ctx = cv.getContext('2d');
@@ -165,8 +161,8 @@
             }
             if(direccion == 'down'){
                 player1.y+=speed;
-                if(player1.y>=800){
-                    player1.y=800;
+                if(player1.y>=700){
+                    player1.y=700;
                 }
             }
             if(direccion == 'right'){

@@ -19,7 +19,7 @@
         var ctx = null;
         var player1 = null;
         var quesito = null;
-        var speed =2;
+        var speed =1;
         var direccion = 'left';
         var pause =true;
         var pared = [];
@@ -28,6 +28,8 @@
         var krabby = new Image();
         var queso = new Image();
         var back = new Image();
+        var ambiente = new Audio();
+        var winMusic = new Audio();
 
     
         function run(){
@@ -39,6 +41,7 @@
             krabby.src="jaiba.png";
             back.src="bground.jpg";
             queso.src="cheese.png";
+            ambiente.src="ambiente.mp3";
             paint();
         }
 
@@ -63,9 +66,12 @@
             ctx.font="30px Arial";
             ctx.beginPath();
             ctx.fillStyle="black";
-            ctx.fillText("PAUSE",350,350);    
-            
+            ctx.fillText("PAUSE",350,350);
+            ambiente.pause();   
+            speed = 0;
             }else{
+             speed =1;
+             ambiente.play();
              update();
             }
 
@@ -79,6 +85,8 @@
                 ctx.fillText("Lograste llevar a la jaiba al quesito",180,350);
                 ctx.fillText("Felicidades Ganaste",250,400);
                 speed=0;
+                ambiente.pause();
+                ambiente.currentTime = 0;
             }else{
                 update();
             }
@@ -153,6 +161,7 @@
                
         })
         function update(){
+            
             if(direccion == 'up'){
                 player1.y-=speed;
                 if(player1.y<=100){
@@ -182,6 +191,7 @@
                 player1.x-=speed;
                 player1.y-=speed;
                 victoria =true;
+                
             }
 
 

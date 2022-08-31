@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <canvas id="mycanvas" width="710" height="710">
+        Hola tu navegador no funciona
+    </canvas>
+
+    
+    <script type="text/javascript">
+
+        var cv = null;
+        var ctx = null;
+        var press = false;
+        var player1 = null;
+        var quesito = null;
+        var speed =2;
+        var direccion = 'left';
+        var pause =true;
+        var pared = [];
+        var tiempo = 0;
+        var victoria = false;
+        var krabby = new Image();
+        var queso = new Image();
+        var back = new Image();
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function run(){
+            cv = document.getElementById('mycanvas');
+            ctx = cv.getContext('2d');
+            player1 = new Cuadro(100, 100, 20, 20, "red");
+            quesito = new Cuadro(670,675,30,26,"red");
+            agregaParedes();
+            krabby.src="jaiba.png";
+            back.src="bground.jpg";
+            queso.src="cheese.png";
+            paint();
+        }
+
+        function paint()
+        {
+            window.requestAnimationFrame(paint)
+            ctx.drawImage(back,100,100)
+            ctx.font="30px Arial";
+            ctx.fillStyle="black";
+            ctx.fillText("time: " +tiempo+"sec",50,50);
+            //player1.pintar(ctx);
+            ctx.drawImage(krabby,player1.x,player1.y);
+            ctx.drawImage(queso,quesito.x,quesito.y);
+            for(var i=0;i<pared.length;i++){
+                pared[i].pintar(ctx);
+            }
+
+            if(pause){
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillRect(100,100,670,670);
+            ctx.font="30px Arial";
+            ctx.beginPath();
+            ctx.fillStyle="black";
+            ctx.fillText("PAUSE",350,350);    
+            
+            }else{
+             update();
+            }
+
+            if(victoria){
+                ctx.beginPath();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillRect(100,100,670,670);
+                ctx.font="30px Arial";
+                ctx.beginPath();
+                ctx.fillStyle="black";
+                ctx.fillText("Lograste llevar a la jaiba al quesito",180,350);
+                ctx.fillText("Felicidades Ganaste",250,400);
+                speed=0;
+            }else{
+                update();
+            }
+            
+        }
+
+        function Cuadro(x, y, w, h, c){
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.c = c;
+
+            this.pintar = function(ctx){
+
+                ctx.fillStyle = this.c;
+                ctx.fillRect(this.x, this.y, this.w, this.h);
+                ctx.strokeRect(this.x, this.y, this.w, this.h);
+            }
+            this.intersects = function (target) { 
+
+                if(this.x < target.x + target.w &&
+
+                this.x + this.w > target.x && 
+
+                this.y < target.y + target.h && 
+
+                this.y + this.h > target.y){
+
+                    return true;	
+                }
+            };
+        }
+
+
+        window.requestAnimationFrame = (function () {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function (callback) {
+                 window.setTimeout(callback, 17);
+             };
+        }());
+        document.addEventListener('keydown',function(e){
+                
+                //arriba
+                if(e.keyCode==38 || e.keyCode==87){
+                    direccion = 'up';
+                   // super_y-=5;
+                }
+                //abajo
+                if(e.keyCode==40 || e.keyCode==83){
+                    direccion = 'down';
+                    //super_y+=5;
+                }
+                //derecha
+                if(e.keyCode==39 || e.keyCode==68){
+                    direccion = 'right';
+                    //super_x+=5;
+                }
+                //izquierda
+                if(e.keyCode==37 || e.keyCode==65){
+                    direccion = 'left';
+                    //super_x-=5;
+                }
+                if(e.keyCode==32){
+                    pause=true;
+                }else{
+                    pause=false;
+                }
+            
+               
+        })
+        function update(){
+            if(direccion == 'up'){
+                player1.y-=speed;
+                if(player1.y<=100){
+                    player1.y=100;
+                }
+            }
+            if(direccion == 'down'){
+                player1.y+=speed;
+                if(player1.y>=800){
+                    player1.y=800;
+                }
+            }
+            if(direccion == 'right'){
+                player1.x+=speed;
+                if(player1.x>=700){
+                    player1.x=700;
+                }
+            }
+            if(direccion == 'left'){
+                player1.x-=speed;
+                if(player1.x<=100){
+                    player1.x=100;
+                }
+            }
+
+            if(player1.intersects(quesito)){
+                player1.x-=speed;
+                player1.y-=speed;
+                victoria =true;
+            }
+
+
+            for(var i = 0; i<pared.length;i++){
+
+                if(player1.intersects(pared[i])){
+                    if(direccion=='up'){
+                        player1.y+=speed;
+                    }
+                    if(direccion=='down'){
+                        player1.y-=speed;
+                    }
+                    if(direccion=='left'){
+                        player1.x+=speed;
+                    }
+                    if(direccion=='right'){
+                        player1.x-=speed;
+                    }
+                    
+                }
+            }
+
+        }
+
+        function agregaParedes(){
+            //Recuadro 600x600, Paredes principales
+            pared.push(new Cuadro(100, 100, 1, 590, "black"));
+            pared.push(new Cuadro(700, 100, 1, 590, "black"));
+            pared.push(new Cuadro(130, 100, 570, 1, "black"));
+            pared.push(new Cuadro(100, 690, 570, 1, "black"));
+
+            //Ahora si viene lo chido
+            pared.push(new Cuadro(130,130,1,170,"black"));
+            pared.push(new Cuadro(130,300,80,1,"black"));
+            pared.push(new Cuadro(130,210,30,1,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(160,160,1,30,"black"));
+            pared.push(new Cuadro(160,160,30,1,"black"));
+            pared.push(new Cuadro(190,160,1,80,"black"));
+            pared.push(new Cuadro(160,240,30,1,"black"));
+            pared.push(new Cuadro(160,240,1,150,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(100,330,30,1,"black"));
+            pared.push(new Cuadro(130,330,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(130,390,60,1,"black"));
+            pared.push(new Cuadro(100,330,30,1,"black"));
+            pared.push(new Cuadro(130,390,1,150,"black"));
+            pared.push(new Cuadro(130,540,30,1,"black"));
+            pared.push(new Cuadro(160,510,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(190,540,60,1,"black"));
+            pared.push(new Cuadro(250,510,1,30,"black"));
+            pared.push(new Cuadro(100,570,90,1,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(130,600,30,1,"black"));
+            pared.push(new Cuadro(130,600,1,30,"black"));
+            pared.push(new Cuadro(130,630,30,1,"black"));
+            pared.push(new Cuadro(160,630,1,30,"black"));
+            pared.push(new Cuadro(160,660,30,1,"black"));
+            pared.push(new Cuadro(190,470,1,190,"black"));
+            pared.push(new Cuadro(160,470,30,1,"black"));
+            pared.push(new Cuadro(160,420,1,50,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(130,660,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(160,130,60,1,"black"));
+            pared.push(new Cuadro(220,130,1,140,"black"));
+            pared.push(new Cuadro(190,270,60,1,"black"));
+            pared.push(new Cuadro(250,270,1,60,"black"));
+            pared.push(new Cuadro(250,300,30,1,"black"));
+            pared.push(new Cuadro(190,330,60,1,"black"));
+            pared.push(new Cuadro(220,330,1,60,"black"));
+            pared.push(new Cuadro(220,390,30,1,"black"));
+            pared.push(new Cuadro(250,390,1,30,"black"));
+            pared.push(new Cuadro(250,420,90,1,"black"));
+            pared.push(new Cuadro(310,390,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(250,100,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(220,160,90,1,"black"));
+            pared.push(new Cuadro(280,130,1,30,"black"));
+            pared.push(new Cuadro(250,160,1,60,"black"));
+            pared.push(new Cuadro(250,220,30,1,"black"));
+            pared.push(new Cuadro(250,245,30,1,"black"));
+            pared.push(new Cuadro(280,220,1,50,"black"));
+            pared.push(new Cuadro(280,270,30,1,"black"));
+            pared.push(new Cuadro(310,270,1,60,"black"));
+            pared.push(new Cuadro(280,330,30,1,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(310,100,1,30,"black"));
+            pared.push(new Cuadro(310,130,30,1,"black"));
+            pared.push(new Cuadro(340,130,1,60,"black"));
+            pared.push(new Cuadro(280,190,60,1,"black"));
+            pared.push(new Cuadro(310,190,1,50,"black"));
+            pared.push(new Cuadro(310,240,30,1,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(370,130,1,30,"black"));
+            pared.push(new Cuadro(370,160,30,1,"black"));
+            pared.push(new Cuadro(400,160,1,30,"black"));
+            pared.push(new Cuadro(370,190,30,1,"black"));
+            pared.push(new Cuadro(370,190,1,30,"black"));
+            pared.push(new Cuadro(340,220,30,1,"black"));
+            pared.push(new Cuadro(340,220,1,140,"black"));
+
+            pared.push(new Cuadro(340,310,30,1,"black"));
+            pared.push(new Cuadro(340,335,90,1,"black"));
+            pared.push(new Cuadro(430,310,1,25,"black"));
+            pared.push(new Cuadro(400,310,90,1,"black"));
+            pared.push(new Cuadro(490,280,1,30,"black"));
+            pared.push(new Cuadro(460,280,30,1,"black"));
+            pared.push(new Cuadro(460,250,1,30,"black"));
+
+
+            pared.push(new Cuadro(400,280,1,30,"black"));
+            pared.push(new Cuadro(370,280,30,1,"black"));
+
+            pared.push(new Cuadro(265,360,75,1,"black"));
+            pared.push(new Cuadro(280,360,1,30,"black"));
+            //////////////////////////////////////////////
+            pared.push(new Cuadro(400,130,60,1,"black"));
+            pared.push(new Cuadro(430,130,1,150,"black"));
+            pared.push(new Cuadro(370,250,60,1,"black"));
+            pared.push(new Cuadro(400,220,1,30,"black"));
+            pared.push(new Cuadro(430,220,60,1,"black"));
+            pared.push(new Cuadro(490,190,30,1,"black"));
+            pared.push(new Cuadro(520,160,1,60,"black"));
+            pared.push(new Cuadro(490,190,1,60,"black"));
+            pared.push(new Cuadro(490,250,180,1,"black"));
+            //                                          //
+            pared.push(new Cuadro(520,250,1,150,"black"));
+            pared.push(new Cuadro(460,340,60,1,"black"));
+            pared.push(new Cuadro(460,340,1,50,"black"));
+            pared.push(new Cuadro(340,390,120,1,"black"));
+            pared.push(new Cuadro(370,360,1,30,"black"));
+            pared.push(new Cuadro(370,360,60,1,"black"));
+            pared.push(new Cuadro(340,390,1,120,"black"));
+            pared.push(new Cuadro(310,480,30,1,"black"));
+            //                                          //
+            pared.push(new Cuadro(580,250,1,90,"black"));
+            pared.push(new Cuadro(580,340,30,1,"black"));
+            pared.push(new Cuadro(610,340,1,30,"black"));
+            pared.push(new Cuadro(610,370,60,1,"black"));
+            pared.push(new Cuadro(640,370,1,60,"black"));
+            pared.push(new Cuadro(640,430,60,1,"black"));
+            pared.push(new Cuadro(670,340,1,60,"black"));
+            //                                          //
+            pared.push(new Cuadro(670,250,1,30,"black"));
+            pared.push(new Cuadro(610,280,60,1,"black"));
+            //////////////////////////////////////////////
+            pared.push(new Cuadro(610,310,90,1,"black"));
+            pared.push(new Cuadro(640,310,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(490,100,1,60,"black"));
+            pared.push(new Cuadro(460,160,30,1,"black"));
+            pared.push(new Cuadro(460,160,30,1,"black"));
+            pared.push(new Cuadro(460,160,1,30,"black"));
+            pared.push(new Cuadro(490,130,60,1,"black"));
+            pared.push(new Cuadro(550,130,1,90,"black"));
+            pared.push(new Cuadro(550,220,120,1,"black"));
+            pared.push(new Cuadro(640,160,1,60,"black"));
+            pared.push(new Cuadro(670,130,1,90,"black"));
+            pared.push(new Cuadro(610,130,60,1,"black"));
+            pared.push(new Cuadro(610,130,1,60,"black"));
+            pared.push(new Cuadro(580,190,30,1,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(580,100,1,60,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(190,370,1,60,"black"));
+            pared.push(new Cuadro(190,430,30,1,"black"));
+            pared.push(new Cuadro(220,420,1,90,"black"));
+            pared.push(new Cuadro(220,480,60,1,"black"));
+            pared.push(new Cuadro(280,450,1,150,"black"));
+            pared.push(new Cuadro(250,450,60,1,"black"));
+            pared.push(new Cuadro(220,570,60,1,"black"));
+            pared.push(new Cuadro(220,570,1,90,"black"));
+            pared.push(new Cuadro(220,660,120,1,"black"));
+            pared.push(new Cuadro(340,630,1,30,"black"));
+            pared.push(new Cuadro(280,630,120,1,"black"));
+            pared.push(new Cuadro(400,580,1,80,"black"));
+            pared.push(new Cuadro(400,660,30,1,"black"));
+
+            
+            pared.push(new Cuadro(250,600,60,1,"black"));
+            pared.push(new Cuadro(250,600,1,30,"black"));
+            //////////////////////////////////////////////
+            pared.push(new Cuadro(370,660,1,30,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(460,630,1,60,"black"));
+            pared.push(new Cuadro(430,630,90,1,"black"));
+            pared.push(new Cuadro(490,600,1,30,"black"));
+            pared.push(new Cuadro(490,600,60,1,"black"));
+            pared.push(new Cuadro(490,660,60,1,"black"));
+            pared.push(new Cuadro(550,540,1,120,"black"));
+            pared.push(new Cuadro(550,570,60,1,"black"));
+            pared.push(new Cuadro(610,495,1,75,"black"));
+            pared.push(new Cuadro(610,540,60,1,"black"));
+            pared.push(new Cuadro(670,510,1,60,"black"));
+            pared.push(new Cuadro(640,570,30,1,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(580,600,1,60,"black"));
+            pared.push(new Cuadro(580,660,90,1,"black"));
+            pared.push(new Cuadro(640,630,1,30,"black"));
+            pared.push(new Cuadro(580,600,120,1,"black"));
+            pared.push(new Cuadro(610,600,1,30,"black"));
+            pared.push(new Cuadro(670,630,30,1,"black"));
+            //////////////////////////////////////////////
+            pared.push(new Cuadro(550,280,1,150,"black"));
+            pared.push(new Cuadro(430,430,150,1,"black"));
+            pared.push(new Cuadro(400,390,1,120,"black"));
+            pared.push(new Cuadro(400,490,30,1,"black"));
+            pared.push(new Cuadro(370,430,1,120,"black"));
+            pared.push(new Cuadro(490,370,1,60,"black"));
+            pared.push(new Cuadro(430,430,1,30,"black"));
+            pared.push(new Cuadro(430,460,30,1,"black"));
+            pared.push(new Cuadro(460,460,1,60,"black"));
+            pared.push(new Cuadro(430,520,60,1,"black"));
+            pared.push(new Cuadro(490,490,1,30,"black"));
+            pared.push(new Cuadro(430,520,1,60,"black"));
+            pared.push(new Cuadro(310,550,150,1,"black"));
+            pared.push(new Cuadro(310,510,1,65,"black"));
+            pared.push(new Cuadro(310,575,30,1,"black"));
+            pared.push(new Cuadro(340,575,1,25,"black"));
+            pared.push(new Cuadro(340,600,30,1,"black"));
+            pared.push(new Cuadro(370,575,1,25,"black"));
+            /////////////////////////////////////////////
+            pared.push(new Cuadro(550,370,30,1,"black"));
+            pared.push(new Cuadro(580,370,1,30,"black"));
+            pared.push(new Cuadro(580,400,30,1,"black"));
+            pared.push(new Cuadro(610,400,1,60,"black"));
+            pared.push(new Cuadro(640,460,1,50,"black"));
+            pared.push(new Cuadro(640,485,30,1,"black"));
+            pared.push(new Cuadro(670,460,1,25,"black"));
+
+            pared.push(new Cuadro(580,460,60,1,"black"));
+            pared.push(new Cuadro(580,460,1,80,"black"));
+
+            pared.push(new Cuadro(520,500,60,1,"black"));
+            pared.push(new Cuadro(520,465,1,110,"black"));
+            pared.push(new Cuadro(490,465,60,1,"black"));
+            pared.push(new Cuadro(550,465,1,10,"black"));
+            pared.push(new Cuadro(460,575,60,1,"black"));
+            pared.push(new Cuadro(490,545,1,30,"black"));
+            pared.push(new Cuadro(460,575,1,30,"black"));
+            pared.push(new Cuadro(400,605,60,1,"black"));
+
+        }
+        window.addEventListener('load',run,false);
+
+        
+            
+    </script>
+</body>
+</html>

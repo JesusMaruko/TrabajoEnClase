@@ -23,9 +23,10 @@
         var direccion = 'left';
         var pause =true;
         var pared = [];
-        var tiempo ;
-        var s=0;
-        var m=0;
+        var tiempo;
+        var ms="00";
+        var s="0";
+        var m="0";
         var victoria = false;
         var krabby = new Image();
         var queso = new Image();
@@ -52,20 +53,14 @@
         {
             window.requestAnimationFrame(paint)
             ctx.drawImage(back,100,100)
-            ctx.font="30px Arial";
             ctx.beginPath();
-            ctx.fillStyle="rgb(255,255,255)";
-            ctx.fillRect(50,50,500,30);
-            ctx.fillStyle="black";
-            ctx.fillText("time: " +m+":"+s,50,50);
-            
             //player1.pintar(ctx);
             ctx.drawImage(krabby,player1.x,player1.y);
             ctx.drawImage(queso,quesito.x,quesito.y);
             for(var i=0;i<pared.length;i++){
                 pared[i].pintar(ctx);
             }
-
+            startTime();
             if(pause){
             ctx.beginPath();
             ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
@@ -76,10 +71,10 @@
             ctx.fillText("PAUSE",350,350);
             ambiente.pause();   
             speed = 0;
+            stopTime();
             }else{
              speed =1;
              ambiente.play();
-             crono();
              update();
 
             }
@@ -93,10 +88,11 @@
                 ctx.fillStyle="black";
                 ctx.fillText("Lograste llevar a la jaiba al quesito",180,350);
                 ctx.fillText("Felicidades Ganaste",250,400);
-                speed=0;
                 ambiente.pause();
                 ambiente.currentTime = 0;
-                
+                stopTime();
+                speed=0;
+                direccion='';
             }else{
                 update();
             }
@@ -198,8 +194,18 @@
             }
 
             if(player1.intersects(quesito)){
-                player1.x-=speed;
-                player1.y-=speed;
+                if(direccion=='up'){
+                        player1.y+=speed;
+                    }
+                    if(direccion=='down'){
+                        player1.y-=speed;
+                    }
+                    if(direccion=='left'){
+                        player1.x+=speed;
+                    }
+                    if(direccion=='right'){
+                        player1.x-=speed;
+                    }
                 victoria =true;
                 winMusic.play();
                 
@@ -226,8 +232,31 @@
             }
 
         }
-      
-        
+
+        function startTime(){
+            clearInterval(tiempo);
+            tiempo = setInterval(empiezaTiempo,10);
+        }
+        function stopTime(){
+            clearInterval(tiempo);
+        }
+        function empiezaTiempo(){
+            
+            ms++;
+            if(ms>99){
+                ms=0;
+                s++;
+            }
+            if(s>59){
+                s=0;
+                m++;
+            }
+            ctx.fillStyle="rgb(255,255,255)";
+            ctx.fillRect(0,0,700,70);
+            ctx.beginPath();
+            ctx.fillStyle="black";
+            ctx.fillText("time: " +m+":"+s+":"+ms,50,50);
+        }
 
         function agregaParedes(){
             //Recuadro 600x600, Paredes principales

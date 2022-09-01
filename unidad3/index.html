@@ -13,77 +13,72 @@
 
 
     <div id="contenedor">
-        <h1>
-           {{name}}
-           
-        </h1>
-        <h1>
-            {{lastname}}
-        </h1>
+    <fieldset>
+        <legend>
+            Acceso al panel
+        </legend>
+
+        <label> Correo Electronico</label>
+
+        <input type="email" v-model="email" name="">
+
+        <label> Password</label>
+
+        <input type="password" v-model="password" name="">
         
-        <input type="text" v-model="name">
-        <button @click="hola">click me</button>
-        <hr>
-        <input type="text" v-model="uno" name="first">
-        <input type="text" v-model="dos" name="second">
-        <button @click="suma">click me</button>
-        <h1>
-            {{resultado}}
-        </h1>
-       
-        <hr>
-        <input type="text" v-model="age">
-        <button>Revisar</button>
-        <h1 v-if="age >=18">
-            Pase
-         </h1>
-         <h1 v-if="age <18">
-            No pase
-         </h1>
-        
-         <hr>
-         <ol>
-            <li v-for="item in chamacos">
-                {{item.name}} : <span>{{item.role}}</span>
+        <button @click ="login"> Login    </button>
 
-            </li>
+    </fieldset>
 
-         </ol>
-         <input type="text" v-model="chamacos_name">
-         <input type="text" v-model="chamacos_role">
 
-         <button @click="agregar"> agregar chamaco</button>
 
     </div>
     <script type="text/javascript">
+        
 
         const { createApp } = Vue
-   const app = createApp({
-            data() {
-                return {
-                    name: 'Jesus',
-                    lastname: 'Dominguez',
-                    uno: '0',
-                    dos: '0',
-                    resultado: '',
-                    age: '',
-                    chamacos: [{ name: 'Iran', role: 'front'},{ name: 'Duarte', role: 'backend'}, {name: 'Buenrostro', role: 'Movil'}],
-                    chamacos_name: '',
-                    chamacos_role: ''
-                }
-          }, methods:{
-            hola() {
-                alert('hola ' + this.name);
-            },
-            suma(){
-                this.resultado= parseInt(this.uno) + parseInt(this.dos);
-            },
-            agregar(){
-                this.chamacos.push({name:this.chamacos_name, role:this.chamacos_role});
-            }
+        const data = null;
+        const error = null;
+        
+                
+        const app = createApp({
+                    data() {
+                        return {
+                            user:null,
+                            password: "",
+                            email: ""
+                        }
+                }, methods:{
+                    login(e){
+                        e.preventDefault();
 
-          }
-        }).mount('#contenedor')
+                        var email_user = this.email
+                        var password_user = this.password
+
+                        var access = this.users.map(function(u){
+                            if(email_user === u.email.toLowerCase()){
+                                
+                                if(password_user === u.password){
+                                    alert("Datos correctos")
+                                    return true;
+                                }
+                                alert("Datos incorrectos");
+                            }
+                            
+                        })
+                        
+                    }
+                },
+                    mounted(){
+                        fetch('users.json')
+                        .then((res) => res.json())
+                        .then((json) => (this.users = json))
+                        .catch((err) => (console.log(err)))
+                    }
+
+                
+
+                }).mount('#contenedor')
     </script>
 </body>
 </html>

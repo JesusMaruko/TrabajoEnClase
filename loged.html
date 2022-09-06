@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+    <div id="contenedor">
+        <fieldset>
+            <legend>
+              <b> Welcome {{nombreUsuario}} </b>  
+            </legend>
+            <table border="2">
+                <tr>
+                    <th> Nombre </th>
+                    <th> Nombre de Usuario</th>
+                    <th> Correo Electronico</th>
+                    <th> Numero de Telefono</th>
+                </tr>
+                <tr v-for="user in users">
+                    <td>{{user.name}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phone}}</td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <script type="text/javascript">
+        var miStorage = window.localStorage;
+        
+
+        const { createApp } = Vue
+        const data = null;
+        const error = null;
+        
+                
+        const app = createApp({
+                    data() {
+                        return {
+                            users: null,
+                            nombreUsuario: localStorage.getItem("usuario")
+                            
+                        }
+                }, 
+                    mounted(){
+                        fetch('users.json')
+                        .then((res) => res.json())
+                        .then((json) => (this.users = json))
+                        .catch((err) => (console.log(err)))
+                    }
+                }).mount('#contenedor')
+    </script>
+</body>
+</html>

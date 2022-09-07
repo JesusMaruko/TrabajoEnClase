@@ -4,30 +4,88 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Loged</title>
     <script src="https://unpkg.com/vue@3"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div id="contenedor">
-        <fieldset>
-            <legend>
-              <b> Welcome {{nombreUsuario}} </b>  
-            </legend>
-            <table border="2">
-                <tr>
-                    <th> Nombre </th>
-                    <th> Nombre de Usuario</th>
-                    <th> Correo Electronico</th>
-                    <th> Numero de Telefono</th>
-                </tr>
-                <tr v-for="user in users">
-                    <td>{{user.name}}</td>
-                    <td>{{user.username}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.phone}}</td>
-                </tr>
-            </table>
-        </fieldset>
+        <div v-if="(inAction=='mostrar')">
+            <fieldset>
+                <legend>
+                <b> Welcome {{nombreUsuario}} </b>  
+                </legend>
+                <button @click="accion('anadir',null)"> Agregar </button>
+                <table border="2">
+                    <tr>
+                        <th> #</th>
+                        <th> Nombre </th>
+                        <th> Nombre de Usuario</th>
+                        <th> Correo Electronico</th>
+                        <th> Numero de Telefono</th>
+                        <th> Compañia  </th>
+                        <th> Acciones</th>
+                    </tr>
+                    <tr v-for="(user,index) in users">
+                        <td> {{user.id}}</td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.username}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.phone}}</td>
+                        <td> 
+                            <ul>
+                                <li> {{user.company.name}} </li>
+                                <li> {{user.company.catchPhrase}} </li>
+                                <li> {{user.company.bs}} </li>
+                            </ul>
+                            
+
+                        </td>
+                        <td> <button @click="accion('editar',index)">Editar</button> 
+                            <button @click="eliminar(user.id)">Eliminar</button></td>
+                    </tr>
+                </table>
+                
+            </fieldset>
+        </div>
+        <div v-else action="">
+            <fieldset>
+                <legend> <b>Agregar Usuario</b> </legend>
+                <label for=""><b>Nombre</b></label>
+                <input type="text" style="margin-left: 90px;" v-model="usuarios.name">
+                <br>
+                <br>
+                <label for=""><b>Nombre de Usuario</b></label>
+                <input type="text" style="margin-left: 12px;" v-model="usuarios.username">
+                <br>
+                <br>
+                <label for=""><b>Correo Electronico</b></label>
+                <input type="text" style="margin-left: 16px;" v-model="usuarios.email">
+                <br>
+                <br>
+                <label for=""><b>Numero de telefono</b></label>
+                <input type="text" style="margin-left: 12px;" v-model="usuarios.phone">
+                <br>
+                <br>
+                <label for=""><b>Compañia: </b></label>
+                
+                <br>
+                <label for=""> Nombre</label>
+                <input type="text" style="margin-left: 92px;" v-model="usuarios.company.name">
+                <br>
+                <br>
+                <label for=""> Eslogan </label>
+                <input type="text" style="margin-left: 89px;" v-model="usuarios.company.catchPhrase">
+                <br>
+                <br>
+                <label for=""> BS</label>
+                <input type="text" style="margin-left: 125px;" v-model="usuarios.company.bs">
+                <br>
+                <br>
+                <button @click="guardar" style="margin-left: 180px;"> Guardar</button>
+                <button @click="cancelar"> Cancelar</button>
+            </fieldset>
+        </div>
     </div>
     <script type="text/javascript">
         var miStorage = window.localStorage;
@@ -42,10 +100,123 @@
                     data() {
                         return {
                             users: null,
-                            nombreUsuario: localStorage.getItem("usuario")
+                            nombreUsuario: localStorage.getItem("usuario"),
+                            inAction: 'mostrar',
+                            usuarios:{
+                                id: '',
+                                name: '',
+                                username: '',
+                                email: '',
+                                phone: '',
+                                website: '',
+                                company: {
+                                    name: '',
+                                    catchPhrase:'',
+                                    bs: ''
+                                }
+
+                            }
                             
                         }
-                }, 
+                },
+                    methods:{
+                        accion(a,u){
+                            this.inAction = a;
+                            if(this.inAction =="editar"){
+                                console.log(u);
+                                this.usuarios.id = this.users[u].id;
+                                this.usuarios.name = this.users[u].name;
+                                this.usuarios.username = this.users[u].username;
+                                this.usuarios.email = this.users[u].email;
+                                this.usuarios.phone = this.users[u].phone;
+                                this.usuarios.website = this.users[u].website;
+                                this.usuarios.company.name = this.users[u].company.name;
+                                this.usuarios.company.catchPhrase = this.users[u].company.catchPhrase;
+                                this.usuarios.company.bs = this.users[u].company.bs;
+        
+                            }
+                           
+                        },
+                        cancelar(){
+                            this.inAction = 'mostrar';
+                            this.usuarios.id = '';
+                                this.usuarios.name = '';
+                                this.usuarios.username = '';
+                                this.usuarios.email = '';
+                                this.usuarios.phone = '';
+                                this.usuarios.website = '';
+                                this.usuarios.company.name = '';
+                                this.usuarios.company.catchPhrase = '';
+                                this.usuarios.company.bs = '';
+                        },
+                        guardar(){
+                            if(this.inAction =="anadir"){
+                               this.users.forEach(user => {
+                                    if(user.id > this.usuarios.id){
+                                        this.usuarios.id = user.id;
+                                    }
+                               });
+                               this.users.push({
+                                id: this.usuarios.id + 1,
+                                name: this.usuarios.name,
+                                username: this.usuarios.username,
+                                email: this.usuarios.email,
+                                phone: this.usuarios.phone,
+                                website: this.usuarios.website,
+                                company:{
+                                    name: this.usuarios.company.name,
+                                    catchPhrase: this.usuarios.company.catchPhrase,
+                                    bs: this.usuarios.company.bs
+                                }
+                               });
+                               this.cancelar();
+                            }else if(this.inAction=="editar"){
+                                var id = this.usuarios.id;
+                                var name = this.usuarios.name;
+                                var username = this.usuarios.username;
+                                var email = this.usuarios.email;
+                                var phone = this.usuarios.phone;
+                                var website = this.usuarios.website;
+                                var cname = this.usuarios.company.name;
+                                var cphrase = this.usuarios.company.catchPhrase;
+                                var cbs = this.usuarios.company.cbs;
+                                
+
+                                var access = this.users.map(function(u){
+                                    if(u.id == id){
+                                        u.name = name;
+                                        u.username = username;
+                                        u.email = email;
+                                        u.phone = phone;
+                                        u.website = website;
+                                        u.company.name = cname;
+                                        u.company.catchPhrase = cphrase;
+                                        u.company.bs = cbs;
+                                        
+                                    }
+                                    
+                                });
+                                this.cancelar();
+                                
+                            }
+                        },
+                        eliminar(id){
+                            Swal.fire({
+                            title: "¿Esta seguro de eliminar?",
+                            text: "!No podras revertir este cambio!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Si, eliminar",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.users = this.users.filter((user) => user.id !== id);
+                                    Swal.fire("Eliminado", "El usuario ha sido eliminado correctamente.", "success");
+                                }
+                            });
+                        }
+                    },
                     mounted(){
                         fetch('users.json')
                         .then((res) => res.json())

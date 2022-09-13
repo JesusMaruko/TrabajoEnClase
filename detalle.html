@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Pelicula</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+    
+    <div id="contenedor" >
+        <div v-if="movie!=null">
+            <div class="container text-center">
+                <div class="row align-items-center">
+                    <div style="width: 18rem;">
+                        <div class="card-body">
+                        <h1> {{movie.title}} </h1>
+                        <img class="card-img-top" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + movie.poster_path">
+                        </div>
+                    </div>
+
+                    <div style="width: 28rem;">
+                        <div class="card-body">
+                        <h4> Sinopsis: </h4> 
+                        <h5> {{movie.overview}} </h5>
+                        <h4>Generos: </h4>
+                        <button class="btn btn-primary" v-for="item in movie.genres" cursor="not-allowed" disabled="true"> {{item.name}}</button>
+                        <h4> Fecha de lanzamiento:</h4> <h5> {{movie.release_date}} </h5>
+                        <input type="number" v-model="valora"> <br> <br>
+                        <button class="btn btn-primary" style="background-color: green;" @click="addRate()">Agregar valoracion</button>
+                        <button class="btn btn-primary" style="background-color: red;" @click="deleteRate()">Eliminar Valoracion</button>
+                        </div>
+                    </div>
+
+                 </div>
+            </div> 
+        </div>
+    </div>
+
+    
+    <script type="text/javascript">
+        var miStorage = window.localStorage;
+        
+        const { createApp } = Vue;
+        const data = null;
+        const error = null;
+        
+                
+        const app = createApp({
+                    data() {
+                        return {
+                            movie: null,
+                            idPelicula:  localStorage.getItem('idPeli'),
+                            valora: 10
+                        }
+                },
+                    methods:{
+                        addRate(){
+                            var data = new FormData();
+                            data.append('value', this.valora);
+                            var config = {
+                                method: 'post',
+                                url: 'https://api.themoviedb.org/3/movie/'+app.idPelicula+'/rating?',
+                                headers: { 
+                                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODU5ZTM3MDNkNmE3MDMzMmMzMWFlMGY3NDc3MmIwZCIsInN1YiI6IjYzMWYzMTZlNTY4NDYzMDA4M2NkMzNjNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ut-9on88blYiY4pe53dKArzyO-zOE5BFE5j3JEo1AwM', 
+                                   
+                                },
+                                data : data
+                                };
+
+                                axios(config)
+                                .then(function (response) {
+                                console.log(JSON.stringify(response.data));
+                                alert("Gracias por valorar esta pelicula" + response.data.status_message);
+                                //swal("Gracias por valorar esta pelicula ", response.data.status_message,"success");
+                                })
+                                .catch(function (error) {
+                                 alert("Error al valorar pelicula" + error.data.status_message);
+                                //swal("Error al valorar pelicula ", error.data.status_message, "error");
+                                console.log(error);
+                                });
+                        },
+                        deleteRate(){
+                            var config = {
+                                method: 'delete',
+                                url: 'https://api.themoviedb.org/3/movie/'+app.idPelicula+'/rating?',
+                                headers: { 
+                                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODU5ZTM3MDNkNmE3MDMzMmMzMWFlMGY3NDc3MmIwZCIsInN1YiI6IjYzMWYzMTZlNTY4NDYzMDA4M2NkMzNjNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ut-9on88blYiY4pe53dKArzyO-zOE5BFE5j3JEo1AwM', 
+                                    
+                                },
+                                 
+                                };
+
+                                axios(config)
+                                .then(function (response) {
+                                console.log(JSON.stringify(response.data));
+                                alert("Se ha eliminado la valoracion de esta pelicula" + response.data.status_message);
+                                })
+                                .catch(function (error) {
+                                console.log(error);
+                                alert("Error al eliminar valoracion" + error.data.status_message);
+                                });
+
+                        }
+                        
+                    },
+                    mounted(){
+                        var config = {
+                            
+                            method: 'get',
+                            url: 'https://api.themoviedb.org/3/movie/'+this.idPelicula+'?&language=es-MX\n',
+                            headers: { 
+                                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODU5ZTM3MDNkNmE3MDMzMmMzMWFlMGY3NDc3MmIwZCIsInN1YiI6IjYzMWYzMTZlNTY4NDYzMDA4M2NkMzNjNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ut-9on88blYiY4pe53dKArzyO-zOE5BFE5j3JEo1AwM'
+                            }
+                            };
+
+                            axios(config)
+                            .then(function (response) {
+                            app.movie = response.data;
+                            
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            });
+                         
+                    }
+                }).mount('#contenedor')
+    </script>
+</body>
+</html>

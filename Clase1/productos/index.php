@@ -66,26 +66,30 @@
     
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <form method="post" action="../app/productController.php">
       <div class="modal-body">
       <div class="row align-items-center d-flex justify-content-center">
             <div class="col-6">
-                <form action="">
                     <fieldset>
-                        <input type="text" name="" placeholder="write here">
-                        <input type="text" name="" placeholder="write here">  
-                        <input type="text" name="" placeholder="write here">  
-                        <input type="text" name="" placeholder="write here">  
-                        <input type="text" name="" placeholder="write here">              
+                        <input type="text" name="name" placeholder="product name">
+                        <input type="text" name="slug" placeholder="product slug">  
+                        <input type="text" name="description" placeholder="product description">  
+                        <input type="text" name="features" placeholder="product features">  
+                        <input type="text" name="brand_id" placeholder="product brand">
+                        <!-- <input type="text" name="cover" placeholder="product cover">  -->   
+                       
+
                     </fieldset>
 
-                </form>
             </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
+      <input type="hidden" name="action" value="create">
+      </form>
     </div>
   </div>
 </div>

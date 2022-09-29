@@ -6,8 +6,6 @@ if(isset($_SESSION['token'])){
     $productController = new productController();
     $token = strip_tags($_SESSION['token']);
     $obtenerProductos = $productController->obtenerProductoos($token);
-}else{
-    header("Location:..");
 }
 
     class productController

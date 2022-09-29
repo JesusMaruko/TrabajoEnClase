@@ -29,7 +29,7 @@
                 <div class="row">
                     <?php foreach ($obtenerProductos as $productos) {?>
                     <div class="col-md-3">
-                        <div class="card" style="width: 18rem;">
+                        <div class="card" style="width: 20rem;">
                             <img src="<?php echo $productos->cover ?>" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $productos->name; ?></h5>

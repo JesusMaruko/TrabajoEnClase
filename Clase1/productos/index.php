@@ -1,5 +1,6 @@
+<?php include '../app/productController.php';?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <?php include '../layouts/head.php';?>
 </head>
@@ -26,14 +27,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <?php for ($i=0; $i < 12; $i++): ?>
+                    <?php foreach ($obtenerProductos as $productos) {?>
                     <div class="col-md-3">
                         <div class="card" style="width: 18rem;">
-                            <img src="../public/img/ca.png" class="card-img-top" alt="...">
+                            <img src="<?php echo $productos->cover ?>" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title">Botón Americanista</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Botones </h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <h5 class="card-title"><?php echo $productos->name; ?></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><?php echo $productos->brand->name; ?> </h6>
+                                <p class="card-text"><?php echo $productos->description; ?>.</p>
                                 <div class="row">
                                     <a onclick="remove()" href="#" class="btn btn-danger col-6">Eliminar</a>
                                     <a href="#" class="btn btn-warning col-6">Editar</a>
@@ -43,7 +44,7 @@
                     </div>
                     
                 </div>
-                <?php endfor; ?>
+                <?php } ?>
             </div>
             </div>
            

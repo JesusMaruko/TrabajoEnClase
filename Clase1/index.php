@@ -12,7 +12,7 @@
     <div class="container-fluid bg-secondary" style="--bs-bg-opacity: .5;">
         <div class="row align-items-center d-flex justify-content-center">
             <div class="col-6">
-                <form method="POST" action="app/authController.php">
+                <form method="post" action="app/authController.php">
                     <fieldset>
                         <legend>
                             Datos de acceso
@@ -25,7 +25,7 @@
                             Password:
                         </label>
                         <input type="password" name="password" placeholder="**********">
-                        <input type="hidden" name="" action="action">
+                        <input type="hidden" name="action" value="access">
                         <button class="btn btn-primary" type="submit">
                             Acceder
                         </button>

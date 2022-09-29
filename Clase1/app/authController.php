@@ -1,13 +1,11 @@
 <?php
 if(isset($_POST['action'])){
     switch ($_POST['action']){
-        case 'acess':
+        case 'access':
             $authController = new authController();
             $email = strip_tags($_POST['email']);
             $password = strip_tags($_POST['password']);
-
             $authController->login($email,$password);
-            var_dump($email);
         break;
     }
 }
@@ -18,7 +16,7 @@ class authController{
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/login',
+        CURLOPT_URL => 'http://crud.jonathansoto.mx/api/login',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -31,23 +29,23 @@ class authController{
 
         $response = curl_exec($curl);
         curl_close($curl);
-        $response = json_encode($response);
+        echo $response;
+        $response = json_decode($response);
 
         if(isset($response->code) && $response->code > 0)
         {
             session_start();
-            $_SESSION['name'] = respone->data->name;
-            $_SESSION['lastname'] = respone->data->lastname;
-            $_SESSION['avatar'] = respone->data->avatar;
-            $_SESSION['token'] = respone->data->token;
+            $_SESSION['name'] = $response->data->name;
+            $_SESSION['lastname'] = $response->data->lastname;
+            $_SESSION['avatar'] = $response->data->avatar;
+            $_SESSION['token'] = $response->data->token;
 
             header("Location:../productos");
         }else{
-            #var_dump($response);
-            header("Location:../error=true");
+            
+            header("Location:../?error=true");
         }
     }
 }   
-//jdominguez_19@alu.uabcs.mx
-//64LpT^z^4sz5GJ
+
 ?>

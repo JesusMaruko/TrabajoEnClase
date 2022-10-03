@@ -33,7 +33,14 @@
                             <img src="<?php echo $productos->cover ?>" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $productos->name; ?></h5>
-                                <h6 class="card-subtitle mb-2 text-muted"><?php echo $productos->brand->name; ?> </h6>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    <?php if($productos->brand==null){
+                                        echo "Without brand";
+                                    } else{
+                                        echo $productos->brand->name;
+                                    }
+                                    ?> 
+                                </h6>
                                 <p class="card-text"><?php echo $productos->description; ?>.</p>
                                 <div class="row">
                                     <a onclick="remove()" href="#" class="btn btn-danger col-6">Eliminar</a>
@@ -66,7 +73,7 @@
     
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="post" action="../app/productController.php">
+      <form enctype="multipart/form-data" method="post" action="../app/productController.php" >
       <div class="modal-body">
       <div class="row align-items-center d-flex justify-content-center">
             <div class="col-6">
@@ -76,11 +83,8 @@
                         <input type="text" name="description" placeholder="product description">  
                         <input type="text" name="features" placeholder="product features">  
                         <input type="text" name="brand_id" placeholder="product brand">
-                        <!-- <input type="text" name="cover" placeholder="product cover">  -->   
-                       
-
+                        <input type="file" name="img" placeholder="product cover">
                     </fieldset>
-
             </div>
         </div>
       </div>
@@ -99,4 +103,3 @@
 </body>
 
 </html>
-<!-- El commit pasado se subio con el usuario de duarte, sabe porque si cambie la cuenta, este commit es para que aparezca con mi cuenta :c -->

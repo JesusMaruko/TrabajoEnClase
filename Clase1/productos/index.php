@@ -82,7 +82,13 @@
                         <input type="text" name="slug" placeholder="product slug">  
                         <input type="text" name="description" placeholder="product description">  
                         <input type="text" name="features" placeholder="product features">  
-                        <input type="text" name="brand_id" placeholder="product brand">
+                        <select name="brand_id" id="">
+                            <option disable selected="">Select a brand</option>
+                            <?php foreach($allBrands as $brand){?>
+                                <option value="<?php echo $brand->id;?>">  <?php echo $brand->name; ?> </option>
+                            <?php } ?>
+                        </select>
+                       <!-- <input type="text" name="brand_id" placeholder="product brand"> -->
                         <input type="file" name="img" placeholder="product cover">
                     </fieldset>
             </div>

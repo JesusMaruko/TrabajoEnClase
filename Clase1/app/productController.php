@@ -2,10 +2,12 @@
 
 session_start();
 $obtenerProductos = [];
+$allBrands = [];
 if(isset($_SESSION['token'])){
     $productController = new productController();
     $token = strip_tags($_SESSION['token']);
     $obtenerProductos = $productController->obtenerProductoos($token);
+    $allBrands = $productController->getBrands();
 }
 if(isset($_POST['action'])){
     switch ($_POST['action']){
@@ -78,17 +80,44 @@ if(isset($_POST['action'])){
                 'Authorization: Bearer ' . $_SESSION['token'],
             ),
             ));
+
+             $response = curl_exec($curl);
+             curl_close($curl);
+             $response = json_decode($response);
             
+             if(isset($response->code) && $response->code > 0){
+                 header("Location:../products?success=true");
+             }else{
+                 header("Location:../products?error=true");
+             }
+            
+        }
+        public function getBrands(){
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://crud.jonathansoto.mx/api/brands',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
+            ));
+
             $response = curl_exec($curl);
             curl_close($curl);
             $response = json_decode($response);
-            
+
             if(isset($response->code) && $response->code > 0){
-                header("Location:../products?success=true");
+                return $response->data;
             }else{
-                header("Location:../products?error=true");
+                return array();
             }
-            
         }
         
     }

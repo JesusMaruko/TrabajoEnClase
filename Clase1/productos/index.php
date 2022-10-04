@@ -20,7 +20,7 @@
                             <h4>Añadir Productos</h4>
                         </div>
                         <div class="col">
-                            <button class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="addProduct()">
                                 Añadir Producto
                             </button>
                         </div>
@@ -44,7 +44,7 @@
                                 <p class="card-text"><?php echo $productos->description; ?>.</p>
                                 <div class="row">
                                     <a onclick="remove()" href="#" class="btn btn-danger col-6">Eliminar</a>
-                                    <a href="#" class="btn btn-warning col-6">Editar</a>
+                                    <button  data-product='<?php echo json_encode($productos);?>' onclick="editProduct(this)" href="#"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning col-6">Editar</button>
                                     <a href="detalle.php?slug=<?php echo $productos->slug;?>" class="btn btn-info col-12">Detalles</a>
                                 </div>
                             </div>
@@ -78,11 +78,11 @@
       <div class="row align-items-center d-flex justify-content-center">
             <div class="col-6">
                     <fieldset>
-                        <input type="text" name="name" placeholder="product name">
-                        <input type="text" name="slug" placeholder="product slug">  
-                        <input type="text" name="description" placeholder="product description">  
-                        <input type="text" name="features" placeholder="product features">  
-                        <select name="brand_id" id="">
+                        <input type="text" id="name" name="name" placeholder="product name">
+                        <input type="text" id="slug" name="slug" placeholder="product slug">  
+                        <input type="text" id="description" name="description" placeholder="product description">  
+                        <input type="text" id="features" name="features" placeholder="product features">  
+                        <select name="brand_id" id="brand_id">
                             <option disable selected="">Select a brand</option>
                             <?php foreach($allBrands as $brand){?>
                                 <option value="<?php echo $brand->id;?>">  <?php echo $brand->name; ?> </option>
@@ -98,13 +98,52 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
-      <input type="hidden" name="action" value="create">
+      <input id="inputOculto" type="hidden" name="action" value="create">
+      <input id="id" type="hidden" name="id" value="create">
       </form>
     </div>
   </div>
 </div>
     <?php include '../layouts/scripts.php';?>
-        
+    <script type="text/javascript">
+         function remove()
+         {
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this imaginary file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                        icon: "success",
+                        });
+                        
+
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                    });
+        }
+        function addProduct()
+        {
+            const elem = document.getElementById('inputOculto').value = 'create';
+        }
+        function editProduct(target)
+        {
+            const elem = document.getElementById('inputOculto').value = 'edit';
+            let product = JSON.parse(target.getAttribute('data-product'));
+
+            document.getElementById("name").value = product.name;
+            document.getElementById("slug").value = product.slug;
+            document.getElementById("description").value = product.description;
+            document.getElementById("features").value = product.features;
+            document.getElementById("brand_id").value = product.brand_id;
+            document.getElementById("id").value = product.id;
+        }
+    </script>
     
 </body>
 

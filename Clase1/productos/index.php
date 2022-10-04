@@ -45,7 +45,7 @@
                                 <div class="row">
                                     <a onclick="remove()" href="#" class="btn btn-danger col-6">Eliminar</a>
                                     <a href="#" class="btn btn-warning col-6">Editar</a>
-                                    <a href="detalle.php" class="btn btn-info col-12">Detalles</a>
+                                    <a href="detalle.php?slug=<?php echo $productos->slug;?>" class="btn btn-info col-12">Detalles</a>
                                 </div>
                             </div>
                     </div>

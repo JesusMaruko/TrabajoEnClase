@@ -108,9 +108,9 @@ if(isset($_POST['action'])){
              $response = json_decode($response);
             
              if(isset($response->code) && $response->code > 0){
-                 header("Location:../products?success=true");
+                 header("Location:../productos?success=true");
              }else{
-                 header("Location:../products?error=true");
+                 header("Location:../productos?error=true");
              }
             
         }
@@ -170,7 +170,7 @@ if(isset($_POST['action'])){
                 return array();
             }
         }
-        public function updateProduct($name, $slug, $descripcion, $caracteristicas, $marca, $id){
+        public function updateProduct($name,$slug,$description,$features,$brand_id, $id){
 
             $curl = curl_init();
     
@@ -186,9 +186,9 @@ if(isset($_POST['action'])){
             CURLOPT_POSTFIELDS => 
             'name='.$name.'
             &slug='.$slug.'
-            &description='.$descripcion.'
-            &features='.$caracteristicas.'
-            &brand_id='.$marca.'
+            &description='.$description.'
+            &features='.$features.'
+            &brand_id='.$brand_id.'
             &id='.$id,
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer '.$_SESSION['token'],
@@ -202,10 +202,10 @@ if(isset($_POST['action'])){
             $response = json_decode($response);
     
             if(isset($response->code) && $response->code > 0){
-                header("Location:../products/?success=true");
+                header("Location:../productos/?success=true");
             }
             else{
-                header("Location:../products/?error=true");
+                header("Location:../productos/?error=true");
             }
         }
         public function deleteProduct($id)
@@ -230,9 +230,9 @@ if(isset($_POST['action'])){
             curl_close($curl);
             $response = json_decode($response);
             if (isset($response->code) && $response->code > 0) {
-                header("Location:../products?delete=true");
+                header("Location:../productos?delete=true");
             }else{
-                header("Location:../products?delete=false");
+                header("Location:../productos?delete=false");
             }
         }
         

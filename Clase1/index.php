@@ -1,3 +1,4 @@
+<?php include_once 'app/config.php';?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +27,7 @@
                         </label>
                         <input type="password" name="password" placeholder="**********">
                         <input type="hidden" name="action" value="access">
+                        <input type="hidden" name="g_token" value="<?php echo $_SESSION['g_token'] ?>">
                         <button class="btn btn-primary" type="submit">
                             Acceder
                         </button>

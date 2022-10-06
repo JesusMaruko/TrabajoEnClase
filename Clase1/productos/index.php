@@ -1,3 +1,4 @@
+<?php include '../app/config.php';?>
 <?php include '../app/productController.php';?>
 <!DOCTYPE html>
 <html lang="es">

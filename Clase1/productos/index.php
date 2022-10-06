@@ -43,7 +43,7 @@
                                 </h6>
                                 <p class="card-text"><?php echo $productos->description; ?>.</p>
                                 <div class="row">
-                                    <a onclick="remove()" href="#" class="btn btn-danger col-6">Eliminar</a>
+                                    <a onclick="remove(<?php echo $productos->id ?>)" href="#" class="btn btn-danger col-6">Eliminar</a>
                                     <button  data-product='<?php echo json_encode($productos);?>' onclick="editProduct(this)" href="#"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning col-6">Editar</button>
                                     <a href="detalle.php?slug=<?php echo $productos->slug;?>" class="btn btn-info col-12">Detalles</a>
                                 </div>
@@ -99,14 +99,14 @@
         <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
       <input id="inputOculto" type="hidden" name="action" value="create">
-      <input id="id" type="hidden" name="id" value="create">
+      <input id="id" type="hidden" name="id">
       </form>
     </div>
   </div>
 </div>
     <?php include '../layouts/scripts.php';?>
     <script type="text/javascript">
-         function remove()
+         function remove(id)
          {
                 swal({
                     title: "Are you sure?",
@@ -120,7 +120,17 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                         icon: "success",
                         });
-                        
+                        var bodyFormData = new FormData();
+                        bodyFormData.append('id', id);
+                        bodyFormData.append('action', 'delete');
+
+                        axios.post('../app/productController.php', bodyFormData)
+                        .then(function (response){
+                            console.log(response);
+                        })
+                        .catch(function (error){
+                            console.log('error')
+                        })
 
                     } else {
                         swal("Your imaginary file is safe!");

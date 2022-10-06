@@ -1,5 +1,5 @@
 <?php
-echo "Hola crayola";
+include_once 'config.php';
 if(isset($_POST['action'])){
     switch ($_POST['action']){
         case 'access':
@@ -35,17 +35,17 @@ class authController{
 
         if(isset($response->code) && $response->code > 0)
         {
-            session_start();
+  
             $_SESSION['id'] = $response->data->id;
             $_SESSION['name'] = $response->data->name;
             $_SESSION['lastname'] = $response->data->lastname;
             $_SESSION['avatar'] = $response->data->avatar;
             $_SESSION['token'] = $response->data->token;
 
-            header("Location:../productos");
+            header("Location:". BASE_PATH ."productos");
         }else{
             
-            header("Location:../?error=true");
+            header("Location:". BASE_PATH ."error=true");
         }
     }
 }   

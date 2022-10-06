@@ -13,7 +13,7 @@
     <div class="container-fluid bg-secondary" style="--bs-bg-opacity: .5;">
         <div class="row align-items-center d-flex justify-content-center">
             <div class="col-6">
-                <form method="post" action="auth">
+                <form method="post" action="<?= BASE_PATH ?>auth">
                     <fieldset>
                         <legend>
                             Datos de acceso

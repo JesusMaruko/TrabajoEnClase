@@ -1,4 +1,5 @@
 <?php
+echo "Hola crayola";
 if(isset($_POST['action'])){
     switch ($_POST['action']){
         case 'access':

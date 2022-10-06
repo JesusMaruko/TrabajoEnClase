@@ -130,6 +130,12 @@
         function addProduct()
         {
             const elem = document.getElementById('inputOculto').value = 'create';
+            document.getElementById("name").value = "";
+            document.getElementById("slug").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("features").value = "";
+            document.getElementById("brand_id").value = "";
+           
         }
         function editProduct(target)
         {

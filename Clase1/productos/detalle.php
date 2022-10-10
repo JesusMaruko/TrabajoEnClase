@@ -44,7 +44,15 @@
                         <div class="">
                             <img src="<?php echo $detalleProducto->cover?>" class="card-img-top" alt="...">
                             <h6>
-                            <span class="badge bg-primary"><?php echo $detalleProducto->brand->name; ?></span>
+                            <span class="badge bg-primary">
+                                <?php if($detalleProducto->brand==null){
+                                        echo "Without brand";
+                                    } else{
+                                        echo $detalleProducto->brand->name;
+                                    }
+                                ?> 
+                            
+                            </span>
                             <?php foreach($detalleProducto->tags as $etiqueta) {?>
                                 <span class="badge bg-secondary"><?php echo $etiqueta->name; ?></span>
                             <?php }?>

@@ -42,7 +42,7 @@ class authController{
             $_SESSION['avatar'] = $response->data->avatar;
             $_SESSION['token'] = $response->data->token;
 
-            header("Location:". BASE_PATH ."productos");
+            header("Location:". BASE_PATH ."productos/allProducts");
         }else{
             
             header("Location:". BASE_PATH ."error=true");

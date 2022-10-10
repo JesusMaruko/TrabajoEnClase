@@ -46,7 +46,7 @@
                                 <div class="row">
                                     <a onclick="remove(<?php echo $productos->id ?>)" href="#" class="btn btn-danger col-6">Eliminar</a>
                                     <button  data-product='<?php echo json_encode($productos);?>' onclick="editProduct(this)" href="#"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning col-6">Editar</button>
-                                    <a href="detalle.php?slug=<?php echo $productos->slug;?>" class="btn btn-info col-12">Detalles</a>
+                                    <a href="<?= BASE_PATH."product/".$productos->slug ?>" class="btn btn-info col-12">Detalles</a>
                                 </div>
                             </div>
                     </div>
@@ -74,7 +74,7 @@
     
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form enctype="multipart/form-data" method="post" action="../app/productController.php" >
+      <form enctype="multipart/form-data" method="post" action="<?=BASE_PATH?>prod" >
       <div class="modal-body">
       <div class="row align-items-center d-flex justify-content-center">
             <div class="col-6">
@@ -123,10 +123,11 @@
                         icon: "success",
                         });
                         var bodyFormData = new FormData();
+                        bodyFormData.append('g_token', '<?= $_SESSION['g_token'] ?>');
                         bodyFormData.append('id', id);
                         bodyFormData.append('action', 'delete');
 
-                        axios.post('../app/productController.php', bodyFormData)
+                        axios.post('<?=BASE_PATH?>prod', bodyFormData)
                         .then(function (response){
                             console.log(response);
                         })

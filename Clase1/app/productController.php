@@ -43,6 +43,7 @@ if(isset($_POST['action'])){
 
                 $productController = new productController();
                 $productController->deleteProduct($id);
+                console.log("Estoy entrando a deletear");
             break;
         }   
     }
@@ -109,9 +110,9 @@ if(isset($_POST['action'])){
              $response = json_decode($response);
             
              if(isset($response->code) && $response->code > 0){
-                 header("Location:../productos?success=true");
+                 header("Location:".BASE_PATH."productos/allProducts?success=true");
              }else{
-                 header("Location:../productos?error=true");
+                 header("Location:".BASE_PATH."productos/allProducts?error=true");
              }
             
         }
@@ -203,10 +204,10 @@ if(isset($_POST['action'])){
             $response = json_decode($response);
     
             if(isset($response->code) && $response->code > 0){
-                header("Location:../productos/?success=true");
+                header("Location:".BASE_PATH."productos/allProducts?success=true");
             }
             else{
-                header("Location:../productos/?error=true");
+                header("Location:".BASE_PATH."productos/allProducts?error=true");
             }
         }
         public function deleteProduct($id)
@@ -231,9 +232,9 @@ if(isset($_POST['action'])){
             curl_close($curl);
             $response = json_decode($response);
             if (isset($response->code) && $response->code > 0) {
-                header("Location:../productos?delete=true");
+                header("Location:".BASE_PATH."productos/allProducts?delete=true");
             }else{
-                header("Location:../productos?delete=false");
+                header("Location:".BASE_PATH."productos/allProducts?delete=false");
             }
         }
         

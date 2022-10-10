@@ -15,34 +15,36 @@ if(isset($_GET['slug'])){
     $detalleProducto = $productController->getDetail($urlSlug);
 }
 if(isset($_POST['action'])){
-    switch ($_POST['action']){
-        case 'create':
-            $name = strip_tags($_POST['name']);
-            $slug = strip_tags($_POST['slug']);
-            $description = strip_tags($_POST['description']);
-            $features = strip_tags($_POST['features']);
-            $brand_id = strip_tags($_POST['brand_id']);
-            $img = $_FILES['img']['tmp_name'];
-            
-            $productController = new productController();
-            $productController->createProduct($name,$slug,$description,$features,$brand_id,$img);
-        break;
-        case 'edit':
-            $name = strip_tags($_POST['name']);
-            $slug = strip_tags($_POST['slug']);
-            $description = strip_tags($_POST['description']);
-            $features = strip_tags($_POST['features']);
-            $brand_id = strip_tags($_POST['brand_id']);
-            $id = strip_tags($_POST['id']);
-            $productController = new productController();
-            $productController->updateProduct($name,$slug,$description,$features,$brand_id,$id);
-        break;
-        case 'delete':
-            $id = $_POST['id'];
+    if(isset($_POST["g_token"]) && ($_POST["g_token"] == $_SESSION["g_token"])){
+        switch ($_POST['action']){
+            case 'create':
+                $name = strip_tags($_POST['name']);
+                $slug = strip_tags($_POST['slug']);
+                $description = strip_tags($_POST['description']);
+                $features = strip_tags($_POST['features']);
+                $brand_id = strip_tags($_POST['brand_id']);
+                $img = $_FILES['img']['tmp_name'];
+                
+                $productController = new productController();
+                $productController->createProduct($name,$slug,$description,$features,$brand_id,$img);
+            break;
+            case 'edit':
+                $name = strip_tags($_POST['name']);
+                $slug = strip_tags($_POST['slug']);
+                $description = strip_tags($_POST['description']);
+                $features = strip_tags($_POST['features']);
+                $brand_id = strip_tags($_POST['brand_id']);
+                $id = strip_tags($_POST['id']);
+                $productController = new productController();
+                $productController->updateProduct($name,$slug,$description,$features,$brand_id,$id);
+            break;
+            case 'delete':
+                $id = $_POST['id'];
 
-            $productController = new productController();
-            $productController->deleteProduct($id);
-        break;
+                $productController = new productController();
+                $productController->deleteProduct($id);
+            break;
+        }   
     }
 }
 

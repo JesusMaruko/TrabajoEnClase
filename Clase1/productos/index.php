@@ -101,6 +101,7 @@
       </div>
       <input id="inputOculto" type="hidden" name="action" value="create">
       <input id="id" type="hidden" name="id">
+      <input type="hidden" name="g_token" value="<?php echo $_SESSION['g_token'] ?>">
       </form>
     </div>
   </div>

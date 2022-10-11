@@ -6,4 +6,4 @@ RewriteRule ^auth$ app/authController.php
 RewriteRule ^prod$ app/productController.php
 RewriteRule ^login$ index.php
 RewriteRule ^productos/allProducts$ productos/index.php
-RewriteRule ^product/([^.?]+)$ productos/detalle.php?slug=$1
+RewriteRule ^product/details/([^.?]+)$ productos/detalle.php?slug=$1

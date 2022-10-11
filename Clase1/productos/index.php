@@ -46,7 +46,7 @@
                                 <div class="row">
                                     <a onclick="remove(<?php echo $productos->id ?>)" href="#" class="btn btn-danger col-6">Eliminar</a>
                                     <button  data-product='<?php echo json_encode($productos);?>' onclick="editProduct(this)" href="#"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning col-6">Editar</button>
-                                    <a href="<?= BASE_PATH."product/".$productos->slug ?>" class="btn btn-info col-12">Detalles</a>
+                                    <a href="<?= BASE_PATH."product/details/".$productos->slug ?>" class="btn btn-info col-12">Detalles</a>
                                 </div>
                             </div>
                     </div>

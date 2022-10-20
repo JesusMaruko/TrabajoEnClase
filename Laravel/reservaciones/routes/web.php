@@ -38,4 +38,4 @@ Route::get('suma/{num1}/{num2}/{num3?}', function($num1,$num2,$num3=0){
 Route::post('suma/', function(Request $request){
 
 });
-*/
+*/ ?>

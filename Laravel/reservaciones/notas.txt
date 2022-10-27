@@ -1,0 +1,5 @@
+-correr una seed solita
+php artisan db:seed --class=ReservationSeeder
+
+-crear modelo, migracion, seeder y controlador
+php artisan make:model Name -mcrs

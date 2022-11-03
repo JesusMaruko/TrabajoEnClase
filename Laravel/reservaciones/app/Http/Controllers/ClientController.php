@@ -24,7 +24,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('clients.create');
     }
 
     /**
@@ -35,7 +35,12 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       /* Editar los registros //VvV// 
+       $request['name'] = $request['name']." H";*/
+
+        $client = Client::create($request->all());
+
+        return $client;
     }
 
     /**

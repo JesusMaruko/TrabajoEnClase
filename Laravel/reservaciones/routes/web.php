@@ -21,23 +21,22 @@ Route::get('/', function () {
 });
 
 Route::get('users/',[UserController::class,'index']);
-
 Route::get('users/create', [UserController::class,'create']);
 
 Route::get('users/{id}', [UserController::class,'show']);
-
 Route::post('users/', [UserController::class,'store']);
 
 Route::get('clients/', [ClientController::class,'index']);
-
+Route::get('clients/create',[ClientController::class, 'create']);
 Route::get('clients/{id}', [ClientController::class, 'show']);
+Route::post('clients', [ClientController::class, 'store']);
+
 
 Route::get('reservations/', [ReservationController::class, 'index']);
-
 Route::get('reservations/{id}', [ReservationController::class, 'show']);
 /*
 Route::get('/saludo', function(){
-    echo "hola";;
+    echo "hola";
 });
 
 Route::get('saludo/{name}', function($name){

@@ -37,7 +37,7 @@ Route::get('reservations/', [ReservationController::class, 'index']);
 Route::get('reservations/{id}', [ReservationController::class, 'show']);
 /*
 Route::get('/saludo', function(){
-    echo "hola";
+    echo "hola";;
 });
 
 Route::get('saludo/{name}', function($name){

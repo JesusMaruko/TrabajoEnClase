@@ -20,11 +20,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('login', function () {
+    return view('login');
+})->name('login');
+
 Route::get('users/',[UserController::class,'index']);
 Route::get('users/create', [UserController::class,'create']);
 
 Route::get('users/{id}', [UserController::class,'show']);
 Route::post('users/', [UserController::class,'store']);
+
+Route::get('prueba', function () {
+    return 'hola';
+})->middleware('auth');
+
 
 Route::get('clients/', [ClientController::class,'index']);
 Route::get('clients/create',[ClientController::class, 'create']);
